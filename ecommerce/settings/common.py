@@ -49,18 +49,22 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_celery_beat',
     'rest_framework',
+    'ecommerce',
     'welcome',
     'user'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'ecommerce.middleware.VerboseInfoMiddleware',
 ]
 
 ROOT_URLCONF = 'ecommerce.urls'
@@ -125,30 +129,98 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR.parent, 'locales'),
+)
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR.parent, 'static')
 
 # Media files
 MEDIA_URL = '/storages/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'storages')
+MEDIA_ROOT = os.path.join(BASE_DIR.parent, 'storages')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Setting for REST framework
-# full setting in rest_framework.settings
+# Logging
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        "django.server": {
+            "()": "django.utils.log.ServerFormatter",
+            "format": "[{asctime}] {message}",
+            "style": "{"
+        },
+        "verbose": {
+            "format": (
+                "{levelname} {asctime} {module} {process:d} {thread:d} "
+                "{message} {stack_info}"
+            ),
+            "style": "{"
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{"
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        }
+    }
+}
+
+# Caching
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
+# Setting for REST framework, full setting in rest_framework.settings
 REST_FRAMEWORK = {
     # Default decimal representation in DRF is string,
     # set COERCE_DECIMAL_TO_STRING to disable t
     'COERCE_DECIMAL_TO_STRING': False,
 }
 
+# Setting for JWT REST framework, full setting in rest_framework_jwt.settings
 JWT_AUTH = {
+    'JWT_PAYLOAD_HANDLER': 'user.utils.jwt_payload_handler',
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'user.utils.jwt_response_payload_handler',
+    'JWT_PAYLOAD_GET_USERNAME_HANDLER': (
+        'user.utils.jwt_get_username_from_payload_handler'
+    ),
+    'JWT_EXPIRATION_DELTA': timedelta(hours=24),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
+
     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
-    'JWT_EXPIRATION_DELTA': timedelta(days=10)
+    'JWT_AUTH_COOKIE': None,
 }
