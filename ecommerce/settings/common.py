@@ -29,8 +29,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-sgm%k)ym@z0u38+k@x6j1$4l2c&7d(' \
-             'bjkt$io%xmp#xhg-3z&+'
+SECRET_KEY = (
+    'django-insecure-sgm%k)ym@z0u38+k@x6j1$4l2c&7d(bjkt$io%xmp#xhg-3z&+'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -206,9 +207,22 @@ CACHES = {
 
 # Setting for REST framework, full setting in rest_framework.settings
 REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
     # Default decimal representation in DRF is string,
     # set COERCE_DECIMAL_TO_STRING to disable t
     'COERCE_DECIMAL_TO_STRING': False,
+
 }
 
 # Setting for JWT REST framework, full setting in rest_framework_jwt.settings

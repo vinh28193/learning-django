@@ -21,6 +21,8 @@ class UserManager(BaseUserManager):
             if _email and self.model.EMAIL_FIELD:
                 or_wheres.append(models.Q(**{self.model.EMAIL_FIELD: _email}))
         elif self.model.USERNAME_FIELD:
+            or_wheres.append(models.Q(**{self.model.PHONE_FIELD: username}))
+            or_wheres.append(models.Q(**{self.model.EMAIL_FIELD: username}))
             or_wheres.append(models.Q(**{self.model.USERNAME_FIELD: username}))
 
         if len(or_wheres) == 0:
@@ -91,6 +93,9 @@ class User(AbstractUser, models.Model):
         db_tablespace = "user"
         verbose_name = _("User")
 
+    def __str__(self):
+        return f"{self.get_full_name()} ({self.phone}/{self.email})"
+
     def get_public_info(self, **kwargs):
         public_info = {
             "id": self.id,
@@ -99,7 +104,7 @@ class User(AbstractUser, models.Model):
             "last_name": self.last_name,
             "avatar_image": self.avatar_image,
             "language": self.language,
-            "timezone": self.timezone,
+            "timezone": self.timezone
         }
         return {**public_info, **kwargs}
 
@@ -118,4 +123,4 @@ class User(AbstractUser, models.Model):
             return 'phone'
 
     def get_phone(self):
-        getattr(self, self.PHONE_FIELD, self.phone)
+        return getattr(self, self.PHONE_FIELD, self.phone)

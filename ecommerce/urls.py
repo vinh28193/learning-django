@@ -28,5 +28,6 @@ urlpatterns = [
             path('refresh/', refresh_jwt_token),
             path('verify/', verify_jwt_token)
         ])),
+        path('user/', include('user.urls'))
     ]))
 ]
