@@ -60,3 +60,10 @@ def jwt_response_payload_handler(token, user=None, request=None):
         user = user.get_public_info()
 
     return {'token': token, 'user': user}
+
+
+def jwt_get_user_pk_from_payload_handler(payload):
+    """
+    Override this function if user_id is formatted differently in payload
+    """
+    return payload["id"]

@@ -1,10 +1,12 @@
 from django.urls import path
 
 from user.views import (
-    UserProfileView, LoginView
+    obtain_jwt_token, verify_jwt_token, refresh_jwt_token, user_profile
 )
 
 urlpatterns = [
-    path('login/', LoginView.as_view()),
-    path('profile/', UserProfileView.as_view()),
+    path('jwt-token/obtain/', obtain_jwt_token),
+    path('jwt-token/verify/', verify_jwt_token),
+    path('jwt-token/refresh/', refresh_jwt_token),
+    path('profile/', user_profile),
 ]

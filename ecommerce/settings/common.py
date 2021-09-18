@@ -112,6 +112,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # Auth model
 AUTH_USER_MODEL = 'user.User'
 
+AUTH_MASTER_PASSWORD = "admin123@a"
+
+AUTHENTICATION_BACKENDS = [
+    'user.backends.UserBackend'
+]
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -214,7 +220,7 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'user.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',

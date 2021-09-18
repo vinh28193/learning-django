@@ -1,3 +1,5 @@
 from .user import UserSerializer
-from .login import LoginSerializer
-
+from .jwt_token import (
+    JSONWebTokenSerializer, VerifyJSONWebTokenSerializer,
+    RefreshJSONWebTokenSerializer
+)
