@@ -1,0 +1,112 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-18 16:39+0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+#: .\ecommerce\settings\common.py:127
+msgid "English"
+msgstr ""
+
+#: .\ecommerce\settings\common.py:128
+msgid "Vietnamese"
+msgstr ""
+
+#: .\user\authentication.py:39 .\user\serializers\jwt_token.py:94
+msgid "Signature has expired."
+msgstr ""
+
+#: .\user\authentication.py:42 .\user\serializers\jwt_token.py:97
+msgid "Error decoding signature."
+msgstr ""
+
+#: .\user\authentication.py:59 .\user\serializers\jwt_token.py:107
+msgid "Invalid payload."
+msgstr ""
+
+#: .\user\authentication.py:65
+msgid "Invalid signature."
+msgstr ""
+
+#: .\user\authentication.py:69 .\user\serializers\jwt_token.py:59
+#: .\user\serializers\jwt_token.py:118
+msgid "User account is disabled."
+msgstr ""
+
+#: .\user\models\user.py:39
+msgid "username"
+msgstr ""
+
+#: .\user\models\user.py:45
+msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+msgstr ""
+
+#: .\user\models\user.py:49
+msgid "A user with that username already exists."
+msgstr ""
+
+#: .\user\models\user.py:53
+msgid "phone number"
+msgstr ""
+
+#: .\user\models\user.py:57
+msgid "A user with that phone number already exists."
+msgstr ""
+
+#: .\user\models\user.py:63
+msgid "email address"
+msgstr ""
+
+#: .\user\models\user.py:68
+msgid "A user with that email already exists."
+msgstr ""
+
+#: .\user\models\user.py:74
+msgid "avatar image"
+msgstr ""
+
+#: .\user\models\user.py:78
+msgid "language"
+msgstr ""
+
+#: .\user\models\user.py:81
+msgid "timezone"
+msgstr ""
+
+#: .\user\models\user.py:94
+msgid "User"
+msgstr ""
+
+#: .\user\serializers\jwt_token.py:69
+msgid "Unable to log in with provided credentials."
+msgstr ""
+
+#: .\user\serializers\jwt_token.py:72
+#, python-brace-format
+msgid "Must include \"{username_field}\" and \"password\"."
+msgstr ""
+
+#: .\user\serializers\jwt_token.py:114
+msgid "User doesn't exist."
+msgstr ""
+
+#: .\user\serializers\jwt_token.py:164
+msgid "Refresh has expired."
+msgstr ""
+
+#: .\user\serializers\jwt_token.py:167
+msgid "orig_iat field is required."
+msgstr ""
