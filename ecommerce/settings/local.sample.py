@@ -1,4 +1,4 @@
-from ecommerce.common import *
+from ecommerce.settings.common import *
 
 DEBUG = True
 CORS_ORIGIN_ALLOW_ALL = True

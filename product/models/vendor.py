@@ -13,7 +13,7 @@ class VendorManager(models.Manager.from_queryset(VendorQuerySet)):
 class Vendor(models.Model):
     name = models.CharField(_('vendor name'), max_length=255)
 
-    logo = models.CharField(_('logo'), null=True, blank=True)
+    logo = models.CharField(_('logo'), max_length=255, null=True, blank=True)
 
     active = models.BooleanField(_('active'), default=True)
 
@@ -25,7 +25,7 @@ class Vendor(models.Model):
     )
 
     class Meta:
-        db_table = "vendor"
+        db_table = "product_vendor"
         db_tablespace = "product"
         verbose_name = _("product vendor")
         verbose_name_plural = _("product vendors")

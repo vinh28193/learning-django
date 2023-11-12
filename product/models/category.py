@@ -14,8 +14,6 @@ class Category(models.Model):
 
     name = models.CharField(_('category name'), max_length=255)
 
-    active = models.BooleanField(default=True)
-
     created_at = models.DateTimeField(
         _('created at'), auto_now_add=True
     )
@@ -24,7 +22,7 @@ class Category(models.Model):
     )
 
     class Meta:
-        db_table = "category"
+        db_table = "product_category"
         db_tablespace = "product"
         verbose_name = _("product category")
         verbose_name_plural = _("product categories")

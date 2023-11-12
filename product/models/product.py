@@ -41,41 +41,22 @@ class Product(models.Model):
         null=True,
         on_delete=models.SET_NULL
     )
-
-    created_by = models.ForeignKey(
-        User,
-        verbose_name=_('created by'),
-        on_delete=models.CASCADE
-    )
-
-    created_at = models.DateTimeField(
-        _('created at'), auto_now_add=True
-    )
-    updated_by = models.ForeignKey(
-        User,
-        verbose_name=_('updated by'),
-        on_delete=models.CASCADE
-    )
-    updated_at = models.DateTimeField(
-        _('updated at'), auto_now=True
-    )
-    published_by = models.ForeignKey(
-        User,
-        verbose_name=_('published by'),
-        on_delete=models.CASCADE
-    )
-    published_at = models.DateTimeField(_('published at'))
-    published_scope = models.CharField(
-        _('published scope'),
-        max_length=20,
-        choices=PublishedScope.choices,
-        default=PublishedScope.GLOBAL
-    )
     status = models.CharField(
         _("status"), max_length=10,
         choices=Status.choices,
         default=Status.DRAFT
     )
+    created_by = models.IntegerField(default=None, null=True)
+
+    created_at = models.DateTimeField(
+        _('created at'), auto_now_add=True
+    )
+    updated_by = models.IntegerField(default=None, null=True)
+    updated_at = models.DateTimeField(
+        _('updated at'), auto_now=True
+    )
+    published_by = models.IntegerField(default=None, null=True)
+    published_at = models.DateTimeField(_('published at'))
 
     class Meta:
         db_table = 'product'
