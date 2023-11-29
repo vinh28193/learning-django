@@ -1,10 +1,21 @@
 from django.utils.translation import gettext_lazy as _
 from django.db import models
+
+from store.models import Store
+from user.models import User
 from .product import Product
 
 
 class Image(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="product_images"
+    )
+    store = models.ForeignKey(
+        Store, on_delete=models.CASCADE, related_name="product_images"
+    )
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="images"
+    )
     position = models.PositiveIntegerField()
     src = models.URLField()
     width = models.PositiveIntegerField()

@@ -1,8 +1,9 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from user.models import User
-from .category import Category
-from .vendor import Vendor
+from store.models import Store
+from .category import ProductCategory
+from .vendor import ProductVendor
 
 
 class Product(models.Model):
@@ -15,6 +16,12 @@ class Product(models.Model):
         GLOBAL = 'global', _("Global")
         STORE_FRONT = 'store_front', _("Store Front")
 
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="products"
+    )
+    store = models.ForeignKey(
+        Store, on_delete=models.CASCADE, related_name="products"
+    )
     title = models.CharField(
         _('product name'),
         max_length=255,
@@ -28,14 +35,14 @@ class Product(models.Model):
         blank=True
     )
     category = models.ForeignKey(
-        Category,
+        ProductCategory,
         verbose_name=_('product category'),
         related_name="products",
         on_delete=models.CASCADE,
         null=True,
     )
     vendor = models.ForeignKey(
-        Vendor,
+        ProductVendor,
         verbose_name=_('product vendor'),
         related_name="products",
         null=True,

@@ -1,5 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 from django.db import models
+from store.models import Store
+from user.compat import User
 
 
 class CategoryQuerySet(models.QuerySet):
@@ -10,8 +12,13 @@ class CategoryManager(models.Manager.from_queryset(CategoryQuerySet)):
     """Category Manager"""
 
 
-class Category(models.Model):
-
+class ProductCategory(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="product_categories"
+    )
+    store = models.ForeignKey(
+        Store, on_delete=models.CASCADE, related_name="product_categories"
+    )
     name = models.CharField(_('category name'), max_length=255)
 
     created_at = models.DateTimeField(

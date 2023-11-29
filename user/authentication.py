@@ -9,20 +9,7 @@ jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
 jwt_get_username_from_payload = api_settings.JWT_PAYLOAD_GET_USERNAME_HANDLER
 
 
-class SetupRequestMixin:
-
-    # noinspection PyMethodMayBeStatic
-    def setup(self, request, user, payload, **kwargs):
-
-        if user.is_authenticated:
-            language = getattr(user, "language", None)
-            if language and language != get_language():
-                request.LANGUAGE_CODE = language
-                request.LANG = language
-                activate(language)
-
-
-class JWTAuthentication(SetupRequestMixin, JSONWebTokenAuthentication):
+class JWTAuthentication(JSONWebTokenAuthentication):
 
     def authenticate(self, request):
         """
@@ -45,7 +32,6 @@ class JWTAuthentication(SetupRequestMixin, JSONWebTokenAuthentication):
             raise exceptions.AuthenticationFailed()
 
         user = self.authenticate_credentials(payload)
-        self.setup(request, user, payload)
         return user, payload
 
     def authenticate_credentials(self, payload):

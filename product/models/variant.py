@@ -1,17 +1,28 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from user.models import User
+from store.models import Store
 from .product import Product
 from .image import Image
 
 
-class Variant(models.Model):
+class ProductVariant(models.Model):
+
     class InventoryPolicy(models.TextChoices):
         DENY = 1, _('Deny')
         CONTINUE = 2, _("Continue")
 
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="product_variants"
+    )
+    store = models.ForeignKey(
+        Store, on_delete=models.CASCADE, related_name="product_variants"
+    )
+
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name="variants"
     )
+
     image = models.ForeignKey(
         Image, on_delete=models.CASCADE, related_name="variants"
     )
