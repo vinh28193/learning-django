@@ -1,8 +1,7 @@
 from django.utils.crypto import constant_time_compare
 
-SESSION_KEY = '_auth_user_id'
-BACKEND_SESSION_KEY = '_auth_user_backend'
-HASH_SESSION_KEY = '_auth_user_hash'
+SESSION_KEY = '_store_accessed_id'
+HASH_SESSION_KEY = '__store_accessed_hash'
 
 
 def get_store_model():
@@ -35,8 +34,8 @@ def access(request, store):
             # session if the existing session corresponds to a different
             # authenticated user.
             request.session.flush()
-    else:
-        request.session.cycle_key()
+    # else:
+    #     request.session.cycle_key()
 
     request.session[SESSION_KEY] = store._meta.pk.value_to_string(store)
     request.session[HASH_SESSION_KEY] = session_hash

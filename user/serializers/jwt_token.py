@@ -10,6 +10,8 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from rest_framework_jwt.compat import get_username_field
 from rest_framework_jwt.settings import api_settings
 
+from user.utils.jwt import get_store_field
+
 username_validator = UnicodeUsernameValidator()
 
 User = get_user_model()
@@ -22,7 +24,7 @@ jwt_get_username_from_payload = api_settings.JWT_PAYLOAD_GET_USERNAME_HANDLER
 class Serializer(serializers.Serializer):
 
     def get_auth(self):
-        return self.validated_data["user"], self.validated_data["token"]
+        return self.validated_data["user"], self.validated_data["store"], self.validated_data["token"]
 
     def update(self, instance, validated_data):
         pass
@@ -42,6 +44,7 @@ class JSONWebTokenSerializer(Serializer):
             validators=[username_validator], required=True
         )
         self.fields['password'] = serializers.CharField(required=True)
+        self.fields[get_store_field()] = serializers.CharField(required=False)
 
     @property
     def username_field(self):
@@ -60,11 +63,19 @@ class JSONWebTokenSerializer(Serializer):
             if not user.is_active:
                 msg = _('User account is disabled.')
                 raise serializers.ValidationError(msg)
+            store = None
+            if attrs.get(get_store_field()):
+                from store.models import Store
+                try:
+                    store = Store.objects.get(pk=attrs[get_store_field()])
+                except Store.DoesNotExist:
+                    msg = _('Unable to access to not available store.')
+                    raise serializers.ValidationError(msg)
 
-            payload = jwt_payload_handler(user)
+            payload = jwt_payload_handler(user, store=store)
 
             return OrderedDict(
-                user=user, token=jwt_encode_handler(payload)
+                user=user, store=store, token=jwt_encode_handler(payload)
             )
         else:
             msg = _('Unable to log in with provided credentials.')

@@ -40,6 +40,8 @@ class VerboseInfoMiddleware(MiddlewareMixin):
                 info(f"| Authorized: {request.user}")
             else:
                 info(f"| Unauthorized")
+            if getattr(request, "store", None) is not None:
+                info(f"| Store: {request.store.name}")
             info(f"| Endpoint: {request.path}")
             info(f"| Method: {request.method.upper()}")
             info(f"| Execution time: {round(time.time() - now, 6)}s")
