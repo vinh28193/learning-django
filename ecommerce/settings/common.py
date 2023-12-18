@@ -48,9 +48,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    # 'graphene_django',
     'django_celery_beat',
     'rest_framework',
     'ecommerce',
+    # 'graghql',
     'welcome',
     'user',
     'store',
@@ -117,9 +119,9 @@ AUTH_USER_MODEL = 'user.User'
 
 AUTH_MASTER_PASSWORD = "admin123@a"
 
-AUTHENTICATION_BACKENDS = [
-    'user.backends.UserBackend'
-]
+# AUTHENTICATION_BACKENDS = [
+#     'user.backends.UserBackend'
+# ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -247,3 +249,23 @@ JWT_AUTH = {
     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
     'JWT_AUTH_COOKIE': None,
 }
+
+# Graphene settings
+# GRAPHENE = {
+#     "SCHEMA": "graphql.schema.schema",
+#     # "MIDDLEWARE": (
+#     #     "graphql_jwt.middleware.JSONWebTokenMiddleware",
+#     # ),
+#     "SCHEMA_OUTPUT": BASE_DIR.parent / 'schema.graphql',
+#     "SCHEMA_INDENT": 2,
+# }
+
+# AUTHENTICATION_BACKENDS = [
+#     "graphql_jwt.backends.JSONWebTokenBackend",
+#     "django.contrib.auth.backends.ModelBackend",
+# ]
+#
+# GRAPHQL_JWT = {
+#     "JWT_VERIFY_EXPIRATION": True,
+#     "JWT_EXPIRATION_DELTA": timedelta(days=1),
+# }
