@@ -1,1 +1,1 @@
-from .user import UsersMutation
+from .user import UserMutation

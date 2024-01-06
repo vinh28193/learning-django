@@ -5,6 +5,8 @@ from graphene_django.debug import DjangoDebug
 
 from .queries import UserQuery
 
+from .mutations import UserMutation
+
 queries_all = []
 
 
@@ -13,5 +15,9 @@ class AppQuery(UserQuery, graphene.ObjectType):
     debug = graphene.Field(DjangoDebug, name="_debug")
 
 
-schema = graphene.Schema(query=AppQuery)
+class AppMutation(UserMutation, graphene.ObjectType):
+    """root mutation"""
+    debug = graphene.Field(DjangoDebug, name="_debug")
 
+
+schema = graphene.Schema(query=AppQuery, mutation=AppMutation)
