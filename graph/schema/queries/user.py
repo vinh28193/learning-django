@@ -2,7 +2,7 @@ import graphene
 import graphene_django_optimizer as gql_optimizer
 from django.db.models import QuerySet
 
-from graghql.nodes import UserNode
+from graph.nodes import UserNode
 from user.models import User
 
 

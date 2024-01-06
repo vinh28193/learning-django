@@ -1,7 +1,7 @@
 import graphene
 import graphql_jwt
 
-from graghql.nodes import UserNode
+from graph.nodes import UserNode
 
 
 class UserLoginMutation(graphql_jwt.relay.JSONWebTokenMutation):

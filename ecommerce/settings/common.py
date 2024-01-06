@@ -48,11 +48,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    # 'graphene_django',
+    'graphene_django',
     'django_celery_beat',
     'rest_framework',
     'ecommerce',
-    # 'graghql',
+    'graph',
     'welcome',
     'user',
     'store',
@@ -69,7 +69,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'store.middleware.StoreAccessMiddleware',
     'ecommerce.middleware.VerboseInfoMiddleware',
 ]
 
@@ -251,21 +250,22 @@ JWT_AUTH = {
 }
 
 # Graphene settings
-# GRAPHENE = {
-#     "SCHEMA": "graphql.schema.schema",
-#     # "MIDDLEWARE": (
-#     #     "graphql_jwt.middleware.JSONWebTokenMiddleware",
-#     # ),
-#     "SCHEMA_OUTPUT": BASE_DIR.parent / 'schema.graphql',
-#     "SCHEMA_INDENT": 2,
-# }
+GRAPHENE = {
+    "SCHEMA": "graph.schema.schema",
+    "MIDDLEWARE": (
+        "graphql_jwt.middleware.JSONWebTokenMiddleware",
+        "graphene_django.debug.DjangoDebugMiddleware",
+    ),
+    "SCHEMA_OUTPUT": BASE_DIR.parent / 'schema.graphql',
+    "SCHEMA_INDENT": 2,
+}
 
-# AUTHENTICATION_BACKENDS = [
-#     "graphql_jwt.backends.JSONWebTokenBackend",
-#     "django.contrib.auth.backends.ModelBackend",
-# ]
+AUTHENTICATION_BACKENDS = [
+    "graphql_jwt.backends.JSONWebTokenBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
 #
-# GRAPHQL_JWT = {
-#     "JWT_VERIFY_EXPIRATION": True,
-#     "JWT_EXPIRATION_DELTA": timedelta(days=1),
-# }
+GRAPHQL_JWT = {
+    "JWT_VERIFY_EXPIRATION": True,
+    "JWT_EXPIRATION_DELTA": timedelta(days=1),
+}
