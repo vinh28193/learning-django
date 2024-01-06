@@ -4,9 +4,8 @@ from django.utils.functional import SimpleLazyObject
 
 def get_access_store(request):
     if not hasattr(request, '_cached_store'):
-        from store import get_store_accessed
-        request._cached_store = get_store_accessed(request)
-        print("re", request.__class__.__name__)
+        from store import get_current_store
+        request._cached_store = get_current_store(request)
     return request._cached_store
 
 
