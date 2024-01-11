@@ -1,5 +1,4 @@
-from .builder import SchemaBuilder
+from .builder import builder
 
-builder = SchemaBuilder()
 
 schema = builder.as_schema()

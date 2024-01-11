@@ -1,10 +1,9 @@
 import graphene
-from graphene_django import DjangoObjectType
+import graph
 from .models import User
 
 
-class UserNode(DjangoObjectType):
-    class Meta:
-        model = User
-        exclude = ("password",)
-        interfaces = (graphene.Node,)
+@graph.register(User)
+class UserGraphModel(graph.GraphModel):
+    exclude = ("password",)
+    interfaces = (graphene.relay.Node,)

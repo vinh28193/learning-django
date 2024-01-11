@@ -27,9 +27,6 @@ class JSONWebTokenView(GenericAPIView):
         if serializer.is_valid():
             user, store, token = serializer.get_auth()
             login(request, user)
-            if store:
-                from store import access
-                access(request, store)
             response_data = jwt_response_payload_handler(token, user, request)
             response = Response(response_data)
             if api_settings.JWT_AUTH_COOKIE:
