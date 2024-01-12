@@ -18,16 +18,14 @@ class NotRegistered(Exception):
 class SchemaBuilder:
 
     def __init__(self):
+        self.Query = type("Query", (graphene.ObjectType,), {})
+        self.Mutation = type("Mutation", (graphene.ObjectType,), {})
         self._registry = {}  # model_class class -> graph class instance
-        self.query = type("Query", (graphene.ObjectType,), {})
-        self.mutation = type("Mutation", (graphene.ObjectType,), {})
-        self.types = []
 
     def register(self, model_or_iterable, graph_class=None, **options):
         graph_class = graph_class or GraphModel
         if isinstance(model_or_iterable, ModelBase):
             model_or_iterable = [model_or_iterable]
-        print("model_or_iterable:", model_or_iterable)
         for model in model_or_iterable:
             if model in self._registry:
                 registered_graph = str(self._registry[model])
@@ -39,18 +37,9 @@ class SchemaBuilder:
                 else:
                     msg += 'with %r.' % registered_graph
                 raise AlreadyRegistered(msg)
-
-            self._registry[model] = graph_class(model, self)
-
-    def as_schema(self):
-
-        for model in self._registry:
-            graph_model = self._registry[model]
+            graph_model = graph_class(model, self)
             graph_model.setup()
-        print("query:", getattr(self.query, "user"))
-        return graphene.Schema(
-            query=self.query, mutation=self.mutation
-        )
+            self._registry[model] = graph_model
 
 
 class DefaultSchemaBuilder(LazyObject):

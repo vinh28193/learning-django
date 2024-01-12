@@ -10,22 +10,10 @@ class BaseGraphModel:
         self.model = model
         self.builder = builder
 
-# query resolver builders
-def build_field_by_id_resolver(self):
-    def field_resolver_function(root, info, **fields):
-        queryset = self.get_queryset()
-        queryset = self.filter_queryset(queryset, root, info, **fields)
-        queryset = queryset.filter(pk=fields["id"])
-        optimized_query = gql_optimizer.query(
-            queryset, info, disable_abort_only=True
-        )
-        return optimized_query.first()
-    return field_resolver_function
 
 class GraphModel(BaseGraphModel):
-    fields = None
-    exclude = None
-    filter_fields = ()
+    fields = "__all__"
+    filter_fields = "__all__"
     connection = None
     connection_class = None
     use_connection = None
@@ -34,53 +22,31 @@ class GraphModel(BaseGraphModel):
 
     def setup(self):
         object_type = self.as_object_type()
-        print("object_type", object_type)
-        import graphene
-        from graphene_django import DjangoObjectType
-        from user.models import User
-
-        class UserType(DjangoObjectType):
-            class Meta:
-                model = User
-                exclude = ("password",)
-                interfaces = (graphene.Node,)
-
-        print(UserType, object_type)
-        self.builder.types.append(object_type)
         object_name = self.model.__name__.lower()
         # build query
         setattr(
-            self.builder.query, object_name,
-            graphene.Field(object_type, id=graphene.ID(required=True))
+            self.builder.Query, object_name,
+            graphene.Field(object_type, id=graphene.ID())
         )
-        func_id_resolver = build_field_by_id_resolver(self)
         setattr(
-            self.builder.query, f'resolve_{object_name}',
-            func_id_resolver
+            self.builder.Query, f'resolve_{object_name}',
+            self.resolve_one
         )
-        # setattr(
-        #     self.builder.query, f"all_{object_name}",
-        #     graphene.List(object_type, id=graphene.ID(required=False))
-        # )
-        # setattr(
-        #     self.builder.query, f'resolve_all_{object_name}',
-        #     self.resolve_all
-        # )
+        setattr(
+            self.builder.Query, f"all_{object_name}",
+            DjangoFilterConnectionField(object_type)
+        )
+        setattr(
+            self.builder.Query, f'resolve_all_{object_name}',
+            self.resolve_all
+        )
         # build mutation
 
     def as_object_type(self):
         model_metaclass = type(f"Meta", (), {
             'model': self.model,
             'fields': self.fields,
-            'exclude': self.exclude,
-            'connection': self.connection,
-            'interfaces': self.interfaces
-        })
-        print({
-            'model': self.model,
-            'fields': self.fields,
-            'exclude': self.exclude,
-            'connection': self.connection,
+            'filter_fields': self.filter_fields,
             'interfaces': self.interfaces
         })
         type_attrs = {'Meta': model_metaclass}
@@ -88,6 +54,7 @@ class GraphModel(BaseGraphModel):
             f"{self.model.__name__}Type", (DjangoObjectType,),
             type_attrs
         )
+        self.builder.types.append(object_type)
         return object_type
 
     def get_queryset(self):
@@ -95,8 +62,6 @@ class GraphModel(BaseGraphModel):
 
     def filter_queryset(self, queryset, root, info, **fields):
         return queryset
-
-
 
     def resolve_all(self, root, info, **fields):
         queryset = self.get_queryset()
@@ -106,3 +71,12 @@ class GraphModel(BaseGraphModel):
             queryset, info, disable_abort_only=True,
         )
         return optimized_query
+
+    def resolve_one(self, root, info, **fields):
+        queryset = self.get_queryset()
+        queryset = self.filter_queryset(queryset, root, info, **fields)
+        queryset = queryset.filter(pk=1)
+        optimized_query = gql_optimizer.query(
+            queryset, info, disable_abort_only=True
+        )
+        return optimized_query.first()

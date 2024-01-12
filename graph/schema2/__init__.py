@@ -22,4 +22,5 @@ class AppMutation(UserMutation, graphene.ObjectType):
 
 schema = graphene.Schema(query=AppQuery, mutation=AppMutation)
 
-print(schema.get_mutation_type())
+
+print("query_type:", schema.get_query_type())
