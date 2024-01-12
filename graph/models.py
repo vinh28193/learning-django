@@ -54,7 +54,6 @@ class GraphModel(BaseGraphModel):
             f"{self.model.__name__}Type", (DjangoObjectType,),
             type_attrs
         )
-        self.builder.types.append(object_type)
         return object_type
 
     def get_queryset(self):
