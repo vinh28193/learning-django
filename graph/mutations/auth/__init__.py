@@ -8,6 +8,3 @@ class AuthMutation(graphene.ObjectType):
     login = UserLoginMutation.Field()
     verify_token = graphql_jwt.relay.Verify.Field()
     refresh_token = graphql_jwt.relay.Refresh.Field()
-
-
-__all__ = ["AuthMutation"]

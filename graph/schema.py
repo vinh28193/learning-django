@@ -7,19 +7,16 @@ from .queries import UserQuery
 
 from .mutations import AuthMutation
 
-queries_all = []
-
 
 class AppQuery(UserQuery, graphene.ObjectType):
     """root query"""
     debug = graphene.Field(DjangoDebug, name="_debug")
 
 
-class AppMutation(AuthMutation, graphene.Mutation):
+class AppMutation(AuthMutation):
     """root mutation"""
-    debug = graphene.Field(DjangoDebug, name="_debug")
 
 
-schema = graphene.Schema(query=AppQuery, mutation=AppMutation)
-
-__all__ = ["schema"]
+schema = graphene.Schema(
+    query=cast(graphene.ObjectType, AppQuery), mutation=AppMutation
+)
