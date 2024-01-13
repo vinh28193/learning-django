@@ -1,11 +1,11 @@
 import graphene
 import graphql_jwt
 
-from graph.nodes import UserNode
+from graph.types import UserType
 
 
 class UserLoginMutation(graphql_jwt.relay.JSONWebTokenMutation):
-    user = graphene.Field(UserNode)
+    user = graphene.Field(UserType)
 
     @classmethod
     def Field(cls, *args, **kwargs):

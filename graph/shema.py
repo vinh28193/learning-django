@@ -1,17 +1,25 @@
+from typing import cast
+
 import graphene
 from graphene_django.debug import DjangoDebug
 
-from .builder import builder
+from .queries import UserQuery
+
+from .mutations import AuthMutation
+
+queries_all = []
 
 
-class AppQuery(builder.Query, graphene.ObjectType):
+class AppQuery(UserQuery, graphene.ObjectType):
     """root query"""
     debug = graphene.Field(DjangoDebug, name="_debug")
 
 
-class AppMutation(builder.Mutation, graphene.ObjectType):
+class AppMutation(AuthMutation, graphene.Mutation):
     """root mutation"""
     debug = graphene.Field(DjangoDebug, name="_debug")
 
 
 schema = graphene.Schema(query=AppQuery, mutation=AppMutation)
+
+__all__ = ["schema"]
