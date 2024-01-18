@@ -26,7 +26,7 @@ class UserQuery(graphene.ObjectType):
         return optimized_query.first()
 
     @classmethod
-    def resolve__all_users(cls, root, info, **kwargs) -> QuerySet[User]:
+    def resolve_all_users(cls, root, info, **kwargs) -> QuerySet[User]:
         return gql_optimizer.query(
             User.objects.all(), info, disable_abort_only=True
         )
